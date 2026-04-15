@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from core.config import Settings, get_settings
@@ -13,12 +13,15 @@ from repositories.user_repository import UserRepository
 DbSession = Annotated[Session, Depends(get_db_session)]
 AppSettings = Annotated[Settings, Depends(get_settings)]
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+bearer_scheme = HTTPBearer(
+    auto_error=False,
+    description="JWT access token from POST /api/v1/auth/login",
+)
 
 
 def get_current_user(
     session: DbSession,
-    token: Annotated[str, Depends(oauth2_scheme)],
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)],
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -26,8 +29,11 @@ def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
 
+    if credentials is None or not credentials.credentials:
+        raise credentials_exception
+
     try:
-        token_payload = decode_access_token(token)
+        token_payload = decode_access_token(credentials.credentials)
     except ValueError as exc:
         raise credentials_exception from exc
 
