@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>Лабораторная работа 2</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/fontawesome.min.css" rel="stylesheet">
+        <link href="css/brands.min.css" rel="stylesheet">
+        <link href="css/solid.min.css" rel="stylesheet">
+        <link href="css/v4-font-face.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">Лабораторная работа 2</a>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2" class="nav-link">Лабораторная работа 2</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">Потоки, процессы и асинхронность</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">Цель работы</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#1" class="nav-link">Задача 1. Вычисление суммы</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#1_1" class="nav-link">Результаты задачи 1</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2-1" class="nav-link">Задача 2. Парсинг и заполнение БД ЛР1</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#1_2" class="nav-link">Как данные сохраняются в БД ЛР1</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2_1" class="nav-link">Реализация задачи 2 по подходам</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2_2" class="nav-link">Результаты задачи 2</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#threading-multiprocessing-asyncio" class="nav-link">Различия threading, multiprocessing и asyncio</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_3" class="nav-link">Вывод</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="2">Лабораторная работа 2</h1>
+<h2 id="_1">Потоки, процессы и асинхронность</h2>
+<p>В работе реализованы две части:</p>
+<ol>
+<li>Вычисление суммы чисел от <code>1</code> до <code>10 000 000 000 000</code>.</li>
+<li>Параллельный парсинг веб-страниц с проектами и сохранение полученных данных в базу данных из ЛР1.</li>
+</ol>
+<h2 id="_2">Цель работы</h2>
+<p>Изучить различия между потоками, процессами и асинхронностью в Python, а также проверить, какие подходы лучше подходят для CPU-bound и I/O-bound задач.</p>
+<h2 id="1">Задача 1. Вычисление суммы</h2>
+<p>Для первой задачи реализованы три отдельные программы:</p>
+<ul>
+<li><code>threading_sum.py</code>;</li>
+<li><code>multiprocessing_sum.py</code>;</li>
+<li><code>asyncio_sum.py</code>.</li>
+</ul>
+<p>Каждая программа содержит функцию <code>calculate_sum(...)</code>, разбивает диапазон на несколько чанков, измеряет время выполнения через <code>time.perf_counter()</code> и проверяет результат формулой:</p>
+<pre><code class="language-python">n * (n + 1) // 2
+</code></pre>
+<p>Сумма внутри каждого чанка вычисляется по формуле арифметической прогрессии:</p>
+<pre><code class="language-python">count = end - start + 1
+chunk_sum = (start + end) * count // 2
+</code></pre>
+<p>Такой способ выбран потому, что прямой цикл по <code>10 000 000 000 000</code> числам выполнялся бы слишком долго. Формула не меняет математический результат: она дает ту же сумму чисел на отрезке, но вычисляет ее за константное время.</p>
+<h3 id="threading">Threading</h3>
+<p>В <code>threading_sum.py</code> диапазон делится на чанки, для каждого чанка создается поток. Потоки записывают частичные результаты, затем основной поток объединяет их в итоговую сумму.</p>
+<p>Потоки удобны для I/O-bound задач, но для CPU-bound вычислений в CPython ограничены GIL.</p>
+<h3 id="multiprocessing">Multiprocessing</h3>
+<p>В <code>multiprocessing_sum.py</code> для чанков создаются отдельные процессы. Результаты возвращаются через <code>multiprocessing.Queue</code>.</p>
+<p>Процессы лучше подходят для CPU-bound задач, потому что у каждого процесса отдельный интерпретатор Python и отдельный GIL. В данной работе вычисление по формуле очень быстрое, поэтому в замерах заметны накладные расходы на запуск процессов.</p>
+<h3 id="asyncio">Asyncio</h3>
+<p>В <code>asyncio_sum.py</code> чанки запускаются как асинхронные задачи через <code>asyncio.gather(...)</code>.</p>
+<p>Этот вариант показывает асинхронную оркестрацию, но не дает настоящего CPU-параллелизма. <code>asyncio</code> полезен прежде всего там, где программа ожидает ввод-вывод.</p>
+<h2 id="1_1">Результаты задачи 1</h2>
+<p>Результаты получены после запуска <code>run_all_benchmarks.py</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th style="text-align: right;">Chunks</th>
+<th style="text-align: center;">Verified</th>
+<th style="text-align: right;">Time, seconds</th>
+<th style="text-align: right;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>threading</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: right;">0.001520</td>
+<td style="text-align: right;">50 000 000 000 005 000 000 000 000</td>
+</tr>
+<tr>
+<td>multiprocessing</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: right;">0.832878</td>
+<td style="text-align: right;">50 000 000 000 005 000 000 000 000</td>
+</tr>
+<tr>
+<td>asyncio</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: center;">yes</td>
+<td style="text-align: right;">0.000126</td>
+<td style="text-align: right;">50 000 000 000 005 000 000 000 000</td>
+</tr>
+</tbody>
+</table>
+<p>Все три подхода получили одинаковый результат и прошли проверку.</p>
+<h2 id="2-1">Задача 2. Парсинг и заполнение БД ЛР1</h2>
+<p>Во второй задаче реализованы три программы:</p>
+<ul>
+<li><code>threading_parse.py</code>;</li>
+<li><code>multiprocessing_parse.py</code>;</li>
+<li><code>asyncio_parse.py</code>.</li>
+</ul>
+<p>Каждая программа содержит функцию <code>parse_and_save(url)</code>.</p>
+<p>Парсер обрабатывает публичные страницы PeoplePerHour с карточками проектов. Эти страницы выбраны потому, что они отдают данные в обычном HTML и не требуют авторизации.</p>
+<p>Используемые источники:</p>
+<ul>
+<li><code>https://www.peopleperhour.com/freelance-jobs/technology-programming</code></li>
+<li><code>https://www.peopleperhour.com/freelance-jobs/technology-programming/programming-coding</code></li>
+<li><code>https://www.peopleperhour.com/freelance-jobs/technology-programming/website-development</code></li>
+<li><code>https://www.peopleperhour.com/freelance-jobs/technology-programming/e-commerce-cms-development</code></li>
+<li><code>https://www.peopleperhour.com/freelance-jobs/artificial-intelligence/artificial-intelligence-agent-development</code></li>
+<li><code>https://www.peopleperhour.com/freelance-jobs/artificial-intelligence/artificial-intelligence-website-development</code></li>
+</ul>
+<p>С каждой страницы извлекаются карточки проектов. Для каждой карточки берутся:</p>
+<ul>
+<li>название проекта;</li>
+<li>ссылка на проект;</li>
+<li>текст описания;</li>
+<li>бюджет, если он указан в карточке;</li>
+<li>категория источника.</li>
+</ul>
+<h2 id="1_2">Как данные сохраняются в БД ЛР1</h2>
+<p>В ЛР1 реализован менеджер задач. Поэтому данные, полученные парсером, сохраняются в существующие таблицы ЛР1:</p>
+<ul>
+<li><code>users</code>;</li>
+<li><code>categories</code>;</li>
+<li><code>tasks</code>;</li>
+<li><code>task_categories</code>.</li>
+</ul>
+<p>Создается технический пользователь:</p>
+<pre><code class="language-text">parser_bot
+</code></pre>
+<p>Каждая карточка проекта сохраняется как задача:</p>
+<pre><code class="language-text">project title       -&gt; tasks.title
+project description -&gt; tasks.description
+project URL         -&gt; tasks.description
+budget              -&gt; tasks.description
+parser method       -&gt; tasks.description
+source category     -&gt; categories.name
+</code></pre>
+<p>Связь задачи с категорией сохраняется через таблицу <code>task_categories</code>.</p>
+<p>Для защиты от дублей в <code>tasks.description</code> сохраняется служебный маркер:</p>
+<pre><code class="language-text">Source ID: lr2:&lt;parser_method&gt;:&lt;project_url&gt;
+</code></pre>
+<p>Если при повторном запуске задача с таким <code>Source ID</code> уже существует, она обновляется. Если появляется новый проект с новым URL, создается новая задача.</p>
+<h2 id="2_1">Реализация задачи 2 по подходам</h2>
+<h3 id="threading_1">Threading</h3>
+<p><code>threading_parse.py</code> использует <code>threading</code> и <code>requests</code>.</p>
+<p>URL делятся на группы. Каждая группа обрабатывается отдельным потоком. Такой подход подходит для сетевых задач, потому что во время ожидания HTTP-ответа один поток не блокирует выполнение остальных.</p>
+<h3 id="multiprocessing_1">Multiprocessing</h3>
+<p><code>multiprocessing_parse.py</code> использует процессы и <code>requests</code>.</p>
+<p>Подход корректно выполняет задачу, но для сетевого парсинга имеет дополнительные накладные расходы: создание процессов, отдельная память и передача результатов через <code>Queue</code>.</p>
+<h3 id="asyncio_1">Asyncio</h3>
+<p><code>asyncio_parse.py</code> использует <code>aiohttp</code> и <code>asyncio.gather(...)</code>.</p>
+<p>HTTP-запросы выполняются конкурентно. Сохранение в БД выполняется синхронным SQLAlchemy-кодом, поэтому оно вынесено через <code>asyncio.to_thread(...)</code>.</p>
+<p>Для I/O-bound задачи этот подход оказался самым быстрым.</p>
+<h2 id="2_2">Результаты задачи 2</h2>
+<p>Результаты получены после запуска <code>run_all_benchmarks.py</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th style="text-align: right;">URLs</th>
+<th style="text-align: right;">Saved tasks</th>
+<th style="text-align: right;">Errors</th>
+<th style="text-align: right;">Time, seconds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>threading</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.227198</td>
+</tr>
+<tr>
+<td>multiprocessing</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.522838</td>
+</tr>
+<tr>
+<td>asyncio</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.019772</td>
+</tr>
+</tbody>
+</table>
+<p>Каждый подход обработал 6 страниц и выполнил по 30 операций сохранения задач.</p>
+<p>После очистки БД и повторной проверки в таблице <code>tasks</code> осталось 75 задач ЛР2. Это число может отличаться от количества операций сохранения, потому что PeoplePerHour является динамическим источником:</p>
+<ul>
+<li>уже известные карточки обновляются по <code>Source ID</code>;</li>
+<li>новые карточки добавляются как новые задачи;</li>
+<li>часть карточек может повторяться на разных страницах.</li>
+</ul>
+<h2 id="threading-multiprocessing-asyncio">Различия threading, multiprocessing и asyncio</h2>
+<p><code>threading</code> запускает несколько потоков внутри одного процесса. Потоки разделяют память. Они полезны для I/O-bound задач, но при CPU-bound вычислениях ограничены GIL.</p>
+<p><code>multiprocessing</code> запускает отдельные процессы. У каждого процесса свой интерпретатор Python и свой GIL, поэтому этот подход лучше подходит для тяжелых CPU-bound задач.</p>
+<p><code>asyncio</code> использует event loop и позволяет эффективно выполнять большое количество операций ожидания: HTTP-запросы, сетевой ввод-вывод, обращения к внешним API. Asyncio не заменяет процессы для тяжелых вычислений.</p>
+<p>GIL, или Global Interpreter Lock, не позволяет нескольким потокам одновременно выполнять Python-байткод внутри одного процесса. Поэтому:</p>
+<ul>
+<li>для CPU-bound задач обычно лучше использовать <code>multiprocessing</code>;</li>
+<li>для I/O-bound задач подходят <code>threading</code> и <code>asyncio</code>;</li>
+<li><code>asyncio</code> особенно полезен при большом количестве сетевых запросов.</li>
+</ul>
+<h2 id="_3">Вывод</h2>
+<p>В работе реализованы три подхода к конкурентному выполнению задач в Python.</p>
+<p>Для вычислительной задачи все подходы корректно посчитали сумму и прошли проверку результата.</p>
+<p>Для задачи парсинга самым быстрым оказался <code>asyncio</code>, так как парсинг веб-страниц является I/O-bound задачей и основное время уходит на ожидание сетевых ответов.</p>
+<p>База данных из ЛР1 была заполнена данными, реально полученными при парсинге: карточки проектов PeoplePerHour преобразованы в задачи приложения управления задачами.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js"></script>
+        <script src="search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2026-04-15 01:47:32.633460+00:00
+-->
