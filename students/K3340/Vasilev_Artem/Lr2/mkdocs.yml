@@ -1,6 +1,0 @@
-site_name: Лабораторная работа 2
-docs_dir: docs
-site_dir: site
-
-nav:
-  - ЛР2: index.md

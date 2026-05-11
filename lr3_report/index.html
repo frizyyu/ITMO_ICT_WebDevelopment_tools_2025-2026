@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Васильев Артём, K3340" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Отчет ЛР3 - Лабораторная работа 3</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../stylesheets/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041e\u0442\u0447\u0435\u0442 \u041b\u04203";
+        var mkdocs_page_input_path = "lr3_report.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/powershell.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/json.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/sql.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Лабораторная работа 3
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Главная</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Отчет ЛР3</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">Информация</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">Краткое описание проекта</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">Архитектура</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#docker">Описание Docker</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#dockerfile-api">Dockerfile основного API</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#dockerfile-parser-service">Dockerfile parser-service</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#docker-composeyml">docker-compose.yml</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">Описание базы данных</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#parser-service">Описание parser-service</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#get-health">GET /health</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#post-parse">POST /parse</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">Синхронный вызов парсера</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_6">Асинхронный вызов через очередь</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#periodic-tasks">Periodic tasks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_7">Инструкция по запуску</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_8">Инструкция по тестированию</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#health-endpoint-">Проверка health endpoint-ов</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#parser-service_1">Проверка parser-service</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sync-">Проверка sync-вызова</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#async-">Проверка async-вызова</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#postgresql">Проверка PostgreSQL</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_9">Демонстрация результата</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_10">Вывод</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_11">Чеклист выполнения задания</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Лабораторная работа 3</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Отчет ЛР3</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="3">Лабораторная работа 3<a class="headerlink" href="#3" title="Permanent link">&para;</a></h1>
+<p><a href="../lr3_report.docx">Скачать DOCX-версию отчета</a></p>
+<h2 id="_1">Информация<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><strong>Тема:</strong> упаковка FastAPI приложения в Docker, работа с источниками данных и очереди.</p>
+<p><strong>Студент:</strong> Васильев Артём<br />
+<strong>Группа:</strong> K3340</p>
+<p><strong>Цель работы:</strong> разработать и упаковать в Docker Compose систему на базе FastAPI, PostgreSQL, отдельного сервиса парсинга, Redis, Celery worker и Celery Beat. Основное API должно уметь вызывать parser-service синхронно по HTTP и асинхронно через очередь задач.</p>
+<h2 id="_2">Краткое описание проекта<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Из ЛР1 была взята основа FastAPI-приложения:</p>
+<ul>
+<li>структура <code>app/</code>, <code>core/</code>, <code>models/</code>, <code>repositories/</code>, <code>schemas/</code>, <code>services/</code>;</li>
+<li>SQLAlchemy-модели;</li>
+<li>Alembic-миграции;</li>
+<li>PostgreSQL-конфигурация;</li>
+<li>существующие endpoint-ы API, включая <code>GET /health</code> и <code>GET /api/v1/health</code>.</li>
+</ul>
+<p>Из ЛР2 была взята логика парсера:</p>
+<ul>
+<li><code>parser/common_parse.py</code>;</li>
+<li><code>parser/asyncio_parse.py</code>;</li>
+<li>функции разбора страниц и сохранения результатов в БД;</li>
+<li>список URL по умолчанию <code>DEFAULT_URLS</code>.</li>
+</ul>
+<p>В ЛР3 реализовано:</p>
+<ul>
+<li>Dockerfile для основного API;</li>
+<li>Dockerfile для отдельного <code>parser-service</code>;</li>
+<li><code>docker-compose.yml</code> для запуска всех сервисов;</li>
+<li>PostgreSQL в контейнере;</li>
+<li>Redis в контейнере;</li>
+<li>Celery worker;</li>
+<li>Celery Beat;</li>
+<li>синхронный HTTP-вызов parser-service из API;</li>
+<li>асинхронный запуск парсера через Celery;</li>
+<li>endpoint проверки статуса фоновой задачи;</li>
+<li>периодическая задача парсинга.</li>
+</ul>
+<h2 id="_3">Архитектура<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>В проекте используются следующие сервисы:</p>
+<ul>
+<li><code>api</code> — основное FastAPI-приложение, доступно на <code>localhost:8000</code>;</li>
+<li><code>parser-service</code> — отдельный FastAPI-сервис для запуска парсера, доступен на <code>localhost:8001</code>;</li>
+<li><code>postgres</code> — база данных PostgreSQL, внутри Docker доступна как <code>postgres:5432</code>;</li>
+<li><code>redis</code> — брокер сообщений и result backend для Celery, внутри Docker доступен как <code>redis:6379</code>;</li>
+<li><code>celery-worker</code> — фоновый обработчик задач парсинга;</li>
+<li><code>celery-beat</code> — планировщик периодических задач.</li>
+</ul>
+<p>Текстовая схема:</p>
+<pre><code class="language-text">Client
+  |
+  v
+FastAPI API
+  |
+  +--&gt; parser-service через HTTP
+  |
+  +--&gt; Redis queue
+           |
+           v
+     Celery worker
+           |
+           v
+     parser-service
+           |
+           v
+     PostgreSQL
+</code></pre>
+<h2 id="docker">Описание Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h2>
+<h3 id="dockerfile-api">Dockerfile основного API<a class="headerlink" href="#dockerfile-api" title="Permanent link">&para;</a></h3>
+<p>Файл <code>Dockerfile</code> в корне <code>Lr3</code>:</p>
+<ul>
+<li>использует образ <code>python:3.11-slim</code>;</li>
+<li>задает рабочую директорию <code>/app</code>;</li>
+<li>устанавливает зависимости из <code>requirements.txt</code>;</li>
+<li>копирует код приложения;</li>
+<li>запускает API командой:</li>
+</ul>
+<pre><code class="language-text">uvicorn app.main:app --host 0.0.0.0 --port 8000
+</code></pre>
+<h3 id="dockerfile-parser-service">Dockerfile parser-service<a class="headerlink" href="#dockerfile-parser-service" title="Permanent link">&para;</a></h3>
+<p>Файл <code>parser_service/Dockerfile</code>:</p>
+<ul>
+<li>использует образ <code>python:3.11-slim</code>;</li>
+<li>устанавливает зависимости из <code>requirements.txt</code>;</li>
+<li>копирует папки <code>parser/</code> и <code>parser_service/</code>;</li>
+<li>запускает parser-service командой:</li>
+</ul>
+<pre><code class="language-text">uvicorn parser_service.main:app --host 0.0.0.0 --port 8001
+</code></pre>
+<h3 id="docker-composeyml">docker-compose.yml<a class="headerlink" href="#docker-composeyml" title="Permanent link">&para;</a></h3>
+<p>Файл <code>docker-compose.yml</code> описывает сервисы:</p>
+<ul>
+<li><code>postgres</code>;</li>
+<li><code>redis</code>;</li>
+<li><code>api</code>;</li>
+<li><code>parser-service</code>;</li>
+<li><code>celery-worker</code>;</li>
+<li><code>celery-beat</code>.</li>
+</ul>
+<p>Используемые порты:</p>
+<ul>
+<li><code>8000:8000</code> — основное API;</li>
+<li><code>8001:8001</code> — parser-service;</li>
+<li><code>5432:5432</code> — PostgreSQL;</li>
+<li><code>6379:6379</code> — Redis.</li>
+</ul>
+<p>Для PostgreSQL настроен healthcheck через <code>pg_isready</code>. Для Redis настроен healthcheck через <code>redis-cli ping</code>.</p>
+<h2 id="_4">Описание базы данных<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>В проекте используется PostgreSQL. Подключение внутри Docker выполняется через:</p>
+<pre><code class="language-text">DATABASE_URL=postgresql+psycopg://postgres:postgres@postgres:5432/time_manager
+</code></pre>
+<p>Для миграций используется Alembic. Миграции находятся в папке <code>alembic/</code>.</p>
+<p>Основные таблицы после применения миграций:</p>
+<ul>
+<li><code>users</code>;</li>
+<li><code>categories</code>;</li>
+<li><code>tasks</code>;</li>
+<li><code>task_categories</code>;</li>
+<li><code>time_logs</code>;</li>
+<li><code>daily_plans</code>;</li>
+<li><code>daily_plan_tasks</code>;</li>
+<li><code>notifications</code>;</li>
+<li><code>alembic_version</code>.</li>
+</ul>
+<p>Парсер сохраняет данные в существующие таблицы приложения:</p>
+<ul>
+<li>создает или находит технического пользователя <code>parser_bot</code>;</li>
+<li>создает или находит категорию;</li>
+<li>создает или обновляет записи в <code>tasks</code>;</li>
+<li>связывает задачи и категории через <code>task_categories</code>.</li>
+</ul>
+<h2 id="parser-service">Описание parser-service<a class="headerlink" href="#parser-service" title="Permanent link">&para;</a></h2>
+<p>Parser-service находится в папке <code>parser_service/</code>.</p>
+<p>Реализованные endpoint-ы:</p>
+<pre><code class="language-text">GET /health
+POST /parse
+</code></pre>
+<h3 id="get-health">GET /health<a class="headerlink" href="#get-health" title="Permanent link">&para;</a></h3>
+<p>Проверяет, что parser-service запущен.</p>
+<p>Ожидаемый ответ:</p>
+<pre><code class="language-json">{&quot;status&quot;:&quot;ok&quot;,&quot;service&quot;:&quot;parser-service&quot;}
+</code></pre>
+<h3 id="post-parse">POST /parse<a class="headerlink" href="#post-parse" title="Permanent link">&para;</a></h3>
+<p>Принимает JSON:</p>
+<pre><code class="language-json">{
+  &quot;urls&quot;: [&quot;https://www.peopleperhour.com/freelance-jobs/technology-programming&quot;],
+  &quot;workers&quot;: 4
+}
+</code></pre>
+<p>Возвращает JSON-результат парсинга:</p>
+<pre><code class="language-json">{
+  &quot;method&quot;: &quot;asyncio&quot;,
+  &quot;started_at&quot;: 123.45,
+  &quot;urls&quot;: 1,
+  &quot;saved&quot;: 5,
+  &quot;extracted&quot;: 5,
+  &quot;ok&quot;: 1,
+  &quot;errors&quot;: 0,
+  &quot;elapsed_seconds&quot;: 1.23,
+  &quot;items&quot;: []
+}
+</code></pre>
+<p>Фактические значения <code>saved</code>, <code>extracted</code>, <code>elapsed_seconds</code> и <code>items</code> зависят от доступности внешнего сайта и текущей HTML-структуры страницы.</p>
+<p>Parser-service использует код парсера из ЛР2, перенесенный в папку <code>parser/</code>.</p>
+<h2 id="_5">Синхронный вызов парсера<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>Основное API содержит endpoint:</p>
+<pre><code class="language-text">POST /api/v1/parser/parse-sync
+</code></pre>
+<p>Схема работы:</p>
+<pre><code class="language-text">Client -&gt; FastAPI API -&gt; HTTP POST parser-service /parse -&gt; PostgreSQL -&gt; FastAPI API -&gt; Client
+</code></pre>
+<p>Пример PowerShell-команды:</p>
+<pre><code class="language-powershell">curl.exe -X POST http://localhost:8000/api/v1/parser/parse-sync `
+  -H &quot;Content-Type: application/json&quot; `
+  -d '{\\\&quot;urls\\\&quot;:[\\\&quot;https://www.peopleperhour.com/freelance-jobs/technology-programming\\\&quot;],\\\&quot;workers\\\&quot;:4}'
+</code></pre>
+<p>Ожидаемый результат: API вернет JSON-ответ parser-service. При успешной работе поле <code>ok</code> равно <code>1</code>, а <code>errors</code> равно <code>0</code>.</p>
+<h2 id="_6">Асинхронный вызов через очередь<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>Для асинхронного запуска используются Redis и Celery.</p>
+<p>Redis используется как:</p>
+<ul>
+<li>broker для передачи задач;</li>
+<li>result backend для хранения результата выполнения.</li>
+</ul>
+<p>Celery worker выполняет задачу:</p>
+<pre><code class="language-text">worker.tasks.parse_urls_task
+</code></pre>
+<p>Endpoint постановки задачи в очередь:</p>
+<pre><code class="language-text">POST /api/v1/parser/parse-async
+</code></pre>
+<p>Пример PowerShell-команды:</p>
+<pre><code class="language-powershell">$response = curl.exe -s -X POST http://localhost:8000/api/v1/parser/parse-async `
+  -H &quot;Content-Type: application/json&quot; `
+  -d '{\\\&quot;urls\\\&quot;:[\\\&quot;https://www.peopleperhour.com/freelance-jobs/technology-programming\\\&quot;],\\\&quot;workers\\\&quot;:4}' | ConvertFrom-Json
+
+$taskId = $response.task_id
+$response
+</code></pre>
+<p>Ожидаемый ответ:</p>
+<pre><code class="language-json">{
+  &quot;task_id&quot;: &quot;celery-task-id&quot;,
+  &quot;status&quot;: &quot;queued&quot;
+}
+</code></pre>
+<p>Endpoint проверки статуса:</p>
+<pre><code class="language-text">GET /api/v1/parser/tasks/{task_id}
+</code></pre>
+<p>Пример:</p>
+<pre><code class="language-powershell">curl.exe http://localhost:8000/api/v1/parser/tasks/$taskId
+</code></pre>
+<p>Ожидаемый результат после выполнения:</p>
+<pre><code class="language-json">{
+  &quot;task_id&quot;: &quot;celery-task-id&quot;,
+  &quot;status&quot;: &quot;SUCCESS&quot;,
+  &quot;result&quot;: {
+    &quot;method&quot;: &quot;asyncio&quot;,
+    &quot;urls&quot;: 1,
+    &quot;saved&quot;: 5,
+    &quot;extracted&quot;: 5,
+    &quot;ok&quot;: 1,
+    &quot;errors&quot;: 0
+  },
+  &quot;error&quot;: null
+}
+</code></pre>
+<h2 id="periodic-tasks">Periodic tasks<a class="headerlink" href="#periodic-tasks" title="Permanent link">&para;</a></h2>
+<p>Для периодического запуска задач используется Celery Beat.</p>
+<p>В <code>worker/celery_app.py</code> настроена периодическая задача:</p>
+<pre><code class="language-text">worker.tasks.parse_default_urls_task
+</code></pre>
+<p>Периодичность:</p>
+<pre><code class="language-text">каждые 30 минут
+</code></pre>
+<p>Часовой пояс:</p>
+<pre><code class="language-text">UTC
+</code></pre>
+<p>Задача использует <code>DEFAULT_URLS</code> из <code>parser/common_parse.py</code> и вызывает parser-service через Celery worker. Это нужно для автоматического регулярного обновления данных без ручного HTTP-запроса.</p>
+<h2 id="_7">Инструкция по запуску<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>Перейти в папку <code>Lr3</code>:</p>
+<pre><code class="language-powershell">cd D:\new\my_files\study\WebDev\ITMO_ICT_WebDevelopment_tools_2025-2026\students\K3340\Vasilev_Artem\Lr3
+</code></pre>
+<p>Создать <code>.env</code> из <code>.env.example</code>:</p>
+<pre><code class="language-powershell">Copy-Item .env.example .env
+</code></pre>
+<p>Собрать образы:</p>
+<pre><code class="language-powershell">docker compose build
+</code></pre>
+<p>Запустить сервисы в фоне:</p>
+<pre><code class="language-powershell">docker compose up -d
+</code></pre>
+<p>Применить миграции:</p>
+<pre><code class="language-powershell">docker compose exec api alembic upgrade head
+</code></pre>
+<p>Проверить контейнеры:</p>
+<pre><code class="language-powershell">docker compose ps
+</code></pre>
+<h2 id="_8">Инструкция по тестированию<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<h3 id="health-endpoint-">Проверка health endpoint-ов<a class="headerlink" href="#health-endpoint-" title="Permanent link">&para;</a></h3>
+<pre><code class="language-powershell">curl.exe http://localhost:8000/health
+curl.exe http://localhost:8000/api/v1/health
+curl.exe http://localhost:8001/health
+</code></pre>
+<h3 id="parser-service_1">Проверка parser-service<a class="headerlink" href="#parser-service_1" title="Permanent link">&para;</a></h3>
+<pre><code class="language-powershell">curl.exe -X POST http://localhost:8001/parse `
+  -H &quot;Content-Type: application/json&quot; `
+  -d '{\\\&quot;urls\\\&quot;:[\\\&quot;https://www.peopleperhour.com/freelance-jobs/technology-programming\\\&quot;],\\\&quot;workers\\\&quot;:4}'
+</code></pre>
+<h3 id="sync-">Проверка sync-вызова<a class="headerlink" href="#sync-" title="Permanent link">&para;</a></h3>
+<pre><code class="language-powershell">curl.exe -X POST http://localhost:8000/api/v1/parser/parse-sync `
+  -H &quot;Content-Type: application/json&quot; `
+  -d '{\\\&quot;urls\\\&quot;:[\\\&quot;https://www.peopleperhour.com/freelance-jobs/technology-programming\\\&quot;],\\\&quot;workers\\\&quot;:4}'
+</code></pre>
+<h3 id="async-">Проверка async-вызова<a class="headerlink" href="#async-" title="Permanent link">&para;</a></h3>
+<pre><code class="language-powershell">$response = curl.exe -s -X POST http://localhost:8000/api/v1/parser/parse-async `
+  -H &quot;Content-Type: application/json&quot; `
+  -d '{\\\&quot;urls\\\&quot;:[\\\&quot;https://www.peopleperhour.com/freelance-jobs/technology-programming\\\&quot;],\\\&quot;workers\\\&quot;:4}' | ConvertFrom-Json
+
+$taskId = $response.task_id
+curl.exe http://localhost:8000/api/v1/parser/tasks/$taskId
+</code></pre>
+<h3 id="postgresql">Проверка PostgreSQL<a class="headerlink" href="#postgresql" title="Permanent link">&para;</a></h3>
+<p>Список таблиц:</p>
+<pre><code class="language-powershell">docker compose exec postgres psql -U postgres -d time_manager -c &quot;\dt&quot;
+</code></pre>
+<p>Последние записи в таблицах:</p>
+<pre><code class="language-powershell">docker compose exec postgres psql -U postgres -d time_manager -c &quot;select id, username, email from users order by id desc limit 10;&quot;
+docker compose exec postgres psql -U postgres -d time_manager -c &quot;select id, name, owner_id from categories order by id desc limit 10;&quot;
+docker compose exec postgres psql -U postgres -d time_manager -c &quot;select id, title, owner_id from tasks order by id desc limit 10;&quot;
+docker compose exec postgres psql -U postgres -d time_manager -c &quot;select id, task_id, category_id, label from task_categories order by id desc limit 10;&quot;
+</code></pre>
+<h2 id="_9">Демонстрация результата<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>При успешной демонстрации должно быть видно:</p>
+<ul>
+<li>контейнеры <code>postgres</code>, <code>redis</code>, <code>api</code>, <code>parser-service</code>, <code>celery-worker</code>, <code>celery-beat</code> запущены;</li>
+<li><code>GET /health</code> и <code>GET /api/v1/health</code> отвечают от основного API;</li>
+<li><code>GET /health</code> на порту <code>8001</code> отвечает от parser-service;</li>
+<li><code>POST /parse</code> запускает parser-service;</li>
+<li><code>POST /api/v1/parser/parse-sync</code> выполняет синхронный HTTP-вызов parser-service из API;</li>
+<li><code>POST /api/v1/parser/parse-async</code> возвращает <code>task_id</code>;</li>
+<li><code>GET /api/v1/parser/tasks/{task_id}</code> возвращает статус и результат задачи;</li>
+<li>Celery worker обрабатывает задачу, это видно в логах <code>celery-worker</code>;</li>
+<li>Celery Beat запущен, это видно в <code>docker compose ps</code> и логах <code>celery-beat</code>;</li>
+<li>после успешного парсинга данные появляются в PostgreSQL.</li>
+</ul>
+<p>Пример проверки логов:</p>
+<pre><code class="language-powershell">docker compose logs celery-worker
+docker compose logs celery-beat
+</code></pre>
+<h2 id="_10">Вывод<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p>В ходе лабораторной работы были изучены и применены:</p>
+<ul>
+<li>упаковка FastAPI-приложения в Docker;</li>
+<li>запуск нескольких сервисов через Docker Compose;</li>
+<li>работа PostgreSQL в контейнере;</li>
+<li>вынесение parser-service в отдельный микросервис;</li>
+<li>HTTP-взаимодействие между сервисами;</li>
+<li>Redis как брокер сообщений и хранилище результатов;</li>
+<li>Celery для фоновых задач;</li>
+<li>endpoint-ы для асинхронного запуска и проверки статуса;</li>
+<li>Celery Beat для periodic tasks.</li>
+</ul>
+<p>В результате получилась система, где основной API может запускать парсер напрямую или через очередь, а результаты сохраняются в PostgreSQL.</p>
+<h2 id="_11">Чеклист выполнения задания<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] Dockerfile для API.</li>
+<li>[x] Dockerfile для parser-service.</li>
+<li>[x] <code>docker-compose.yml</code>.</li>
+<li>[x] PostgreSQL.</li>
+<li>[x] HTTP-вызов parser-service.</li>
+<li>[x] Endpoint в API для sync-вызова: <code>POST /api/v1/parser/parse-sync</code>.</li>
+<li>[x] Redis.</li>
+<li>[x] Celery worker.</li>
+<li>[x] Async endpoint: <code>POST /api/v1/parser/parse-async</code>.</li>
+<li>[x] Endpoint статуса задачи: <code>GET /api/v1/parser/tasks/{task_id}</code>.</li>
+<li>[x] Celery Beat.</li>
+<li>[x] Periodic task: <code>worker.tasks.parse_default_urls_task</code>.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Главная"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
